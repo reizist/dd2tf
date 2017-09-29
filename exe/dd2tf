@@ -13,9 +13,15 @@ module Dd2tf
 
     desc "puts monitor configuration as terraform config", "puts monitor config"
     def monitor
-      config = Config.new(options[:dd_api_key], options[:dd_app_key])
-      client = ::Dogapi::Client.new(config.api_key, config.app_key)
       puts Monitor.new(client).output
+    end
+
+    private
+
+    def client
+      return @client unless @client.nil?
+      config = Config.new(options[:dd_api_key], options[:dd_app_key])
+      @client ||= ::Dogapi::Client.new(config.api_key, config.app_key)
     end
   end
 end
