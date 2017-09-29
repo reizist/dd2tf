@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'dd2tf'
+require 'thor'
+require 'dogapi'
+
+module Dd2tf
+  class Cli < Thor
+    include Thor::Actions
+
+    class_option :dd_api_key, type: :string
+    class_option :dd_app_key, type: :string
+
+    desc "puts monitor configuration as terraform config", "puts monitor config"
+    def monitor
+      config = Config.new(options[:dd_api_key], options[:dd_app_key])
+      client = ::Dogapi::Client.new(config.api_key, config.app_key)
+      puts Monitor.new(client).output
+    end
+  end
+end
+
+Dd2tf::Cli.start
