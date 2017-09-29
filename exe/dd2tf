@@ -16,6 +16,11 @@ module Dd2tf
       puts Monitor.new(client).output
     end
 
+    desc "puts timeboard configuration as terraform config", "puts timeboard config"
+    def timeboard
+      puts Timeboard.new(client).output
+    end
+
     private
 
     def client
