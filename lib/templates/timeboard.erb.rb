@@ -50,7 +50,7 @@ resource "datadog_timeboard" "<%= board_name %>" {
       }
       <%- end -%>
       <%- if !graph["definition"]["events"].nil? -%>
-      events = "<%= graph["definition"]["events"] %>"
+      events = <%= graph["definition"]["events"] %>
       <%- end -%>
       <%- if !graph["definition"]["precision"].nil? -%>
       precision = "<%= graph["definition"]["precision"] %>"
