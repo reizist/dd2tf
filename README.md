@@ -1,8 +1,7 @@
 # Dd2tf
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dd2tf`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem export datadog configuration as terraform format.
+Inspired by [kurochan/datadog_monitor2terraform](https://github.com/kurochan/datadog_monitor2terraform)
 
 ## Installation
 
@@ -22,22 +21,80 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ dd2tf help
+Commands:
+  dd2tf help [COMMAND]                                    # Describe available commands or one specific command
+  dd2tf puts monitor configuration as terraform config    # puts monitor config
+  dd2tf puts timeboard configuration as terraform config  # puts timeboard config
+  dd2tf puts user configuration as terraform config       # puts user config
 
-## Development
+Options:
+  [--dd-api-key=DD_API_KEY]
+  [--dd-app-key=DD_APP_KEY]
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+e.g.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+$ dd2tf user --dd_api_key=xxx --dd-app_key=xxx
+resource "datadog_user" "reiji_kainuma" {
+  disabled = "false"
+  email = "reizist@gmail.com"
+  handle = "reizist@gmail.com"
+  is_admin = "true"
+  name = "Reiji Kainuma"
+  role = ""
+}
 
-## Contributing
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/dd2tf. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+```
+$ dd2tf monitor --dd_api_key=xxx --dd-app_key=xxx
+resource "datadog_monitor" "auto_clock_in_sync_with_ntp" {
+  name               = "[Auto] Clock in sync with NTP"
+  type               = "service check"
+  message            = <<EOF
+  Triggers if any host's clock goes out of sync with the time given by NTP. The offset threshold is configured in the Agent's `ntp.yaml` file.
 
-## License
+Please read the [KB article](http://help.datadoghq.com/hc/en-us/articles/204282095-Network-Time-Protocol-NTP-Offset-Issues) on NTP Offset issues for more details on cause and resolution.
+  EOF
+  query = "\"ntp.in_sync\".over(\"*\").last(2).count_by_status()"
+  thresholds {
+	ok = 1
+	warning = 1
+	critical = 1
+  }
+  tags = []
+}
+```
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+```
+$ dd2tf timeboard --dd_api_key=xxx --dd-app_key=xxx
+resource "datadog_timeboard" "presto_staging" {
+  title       = "Presto(staging)"
+  description = "created by xxx"
+  read_only   = false
 
-## Code of Conduct
 
-Everyone interacting in the Dd2tf project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/reizist/dd2tf/blob/master/CODE_OF_CONDUCT.md).
+  graph {
+    title = "cluster_memory_manager_metrics"
+    viz   = "timeseries"
+    autoscale = "true"
+
+    request {
+      q  = "avg:presto_staging.cluster_memory_manager_metrics.cluster_memory_usage_bytes{*}"
+      aggregator = "avg"
+      type = "line"
+    }
+    request {
+      q  = "avg:presto_staging.cluster_memory_manager_metrics.cluster_memory_bytes{*}"
+      type = "line"
+    }
+  }
+}
+```
+
+# Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/dd2tf. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the Contributor Covenant code of conduct.
