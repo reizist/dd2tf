@@ -10,15 +10,15 @@ resource "datadog_monitor" "<%= monitor_name %>" {
   <%- end -%>
   <%- if monitor["options"]["thresholds"] != nil && monitor["options"]["thresholds"] != {} -%>
   thresholds {
-  <%- if monitor["options"]["thresholds"]["ok"] != nil -%>
-  <%= monitor["options"]["thresholds"]["ok"] %>
-  <%- end -%>
-  <%- if monitor["options"]["thresholds"]["warning"] != nil -%>
-  warning = <%= monitor["options"]["thresholds"]["warning"] %>
-  <%- end -%>
-  <%- if monitor["options"]["thresholds"]["critical"] != nil -%>
-  critical = <%= monitor["options"]["thresholds"]["critical"] %>
-  <%- end -%>
+    <%- if monitor["options"]["thresholds"]["ok"] != nil -%>
+    ok = <%= monitor["options"]["thresholds"]["ok"] %>
+    <%- end -%>
+    <%- if monitor["options"]["thresholds"]["warning"] != nil -%>
+    warning = <%= monitor["options"]["thresholds"]["warning"] %>
+    <%- end -%>
+    <%- if monitor["options"]["thresholds"]["critical"] != nil -%>
+    critical = <%= monitor["options"]["thresholds"]["critical"] %>
+    <%- end -%>
   }
   <%- end -%>
   <%- if monitor["options"]["notify_no_data"] != nil -%>
