@@ -21,6 +21,11 @@ module Dd2tf
       puts Timeboard.new(client).output
     end
 
+    desc "puts user configuration as terraform config", "puts user config"
+    def user
+      puts User.new(client).output
+    end
+
     private
 
     def client
