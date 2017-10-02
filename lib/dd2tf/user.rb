@@ -6,7 +6,7 @@ module Dd2tf
 
       results = []
       users.each do |user|
-        user_name = user["name"].to_s.underscore.gsub(" ", "_")
+        user_name = user["name"].to_s.underscore.gsub(" ", "_").gsub(UNALLOWED_RESOURCE_TITLE_REGEXP, '')
         renderer = renderer()
         results << renderer.result(binding)
       end

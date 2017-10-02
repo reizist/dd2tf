@@ -1,6 +1,3 @@
-require 'active_support'
-require 'active_support/core_ext'
-
 module Dd2tf
   class Monitor < Base
 
@@ -9,7 +6,7 @@ module Dd2tf
 
       results = []
       monitors.each do |monitor|
-        monitor_name = monitor["name"].underscore.gsub(" ", "_")
+        monitor_name = monitor["name"].underscore.gsub(" ", "_").gsub(UNALLOWED_RESOURCE_TITLE_REGEXP, '')
         renderer = renderer()
         results << renderer.result(binding)
       end
