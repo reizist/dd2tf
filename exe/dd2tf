@@ -11,17 +11,17 @@ module Dd2tf
     class_option :dd_api_key, type: :string
     class_option :dd_app_key, type: :string
 
-    desc "puts monitor configuration as terraform config", "puts monitor config"
+    desc "monitor", "puts monitor config"
     def monitor
       puts Monitor.new(client).output
     end
 
-    desc "puts timeboard configuration as terraform config", "puts timeboard config"
+    desc "timeboard", "puts timeboard config"
     def timeboard
       puts Timeboard.new(client).output
     end
 
-    desc "puts user configuration as terraform config", "puts user config"
+    desc "user", "puts user config"
     def user
       puts User.new(client).output
     end
