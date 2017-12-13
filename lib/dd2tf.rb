@@ -1,5 +1,4 @@
 require "dd2tf/version"
-require "dd2tf/config"
 
 require "dd2tf/base"
 require "dd2tf/user"
