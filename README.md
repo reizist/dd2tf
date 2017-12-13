@@ -24,24 +24,24 @@ Or install it yourself as:
 ```
 $ dd2tf help
 Commands:
-  dd2tf help [COMMAND]  # Describe available commands or one specific command
-  dd2tf monitor         # puts monitor config
-  dd2tf timeboard       # puts timeboard config
-  dd2tf user            # puts user config
+  dd2tf help [COMMAND]    # Describe available commands or one specific command
+  dd2tf print [resource]  # Print resources importing command for outputting to tfstate. [resource] is one of the [monitor, timeboard, user, downtime]
+  dd2tf tf [resource]     # Print resources config terrafom formatted. [resource] is one of the [monitor, timeboard, user]
 
 Options:
-  [--dd-api-key=DD_API_KEY]
-  [--dd-app-key=DD_APP_KEY]
+  --dd-api-key=DD_API_KEY
+  --dd-app-key=DD_APP_KEY
 ```
 
-e.g.
+
+### Print resources config terraform formatted
 
 ```
-$ dd2tf user --dd_api_key=xxx --dd-app_key=xxx
+$ dd2tf tf user --dd_api_key=xxx --dd-app_key=xxx
 resource "datadog_user" "reiji_kainuma" {
   disabled = "false"
-  email = "reizist@gmail.com"
-  handle = "reizist@gmail.com"
+  email = "reizist@example.com"
+  handle = "reizist@example.com"
   is_admin = "true"
   name = "Reiji Kainuma"
   role = ""
@@ -50,7 +50,7 @@ resource "datadog_user" "reiji_kainuma" {
 ```
 
 ```
-$ dd2tf monitor --dd_api_key=xxx --dd-app_key=xxx
+$ dd2tf tf monitor --dd_api_key=xxx --dd-app_key=xxx
 resource "datadog_monitor" "auto_clock_in_sync_with_ntp" {
   name               = "[Auto] Clock in sync with NTP"
   type               = "service check"
@@ -70,7 +70,7 @@ Please read the [KB article](http://help.datadoghq.com/hc/en-us/articles/2042820
 ```
 
 ```
-$ dd2tf timeboard --dd_api_key=xxx --dd-app_key=xxx
+$ dd2tf tf timeboard --dd_api_key=xxx --dd-app_key=xxx
 resource "datadog_timeboard" "presto_staging" {
   title       = "Presto(staging)"
   description = "created by xxx"
@@ -93,6 +93,14 @@ resource "datadog_timeboard" "presto_staging" {
     }
   }
 }
+```
+
+### Print import command for importing resources to tfstate
+
+```
+$ dd2tf print monitor --dd_api_key=xxx --dd-app_key=xxx
+terraform import datadog_monitor.presto_insufficient_resource_error xxxxxxx 
+terraform import datadog_monitor.presto_queueing_is_very_high xxxxxxx
 ```
 
 # Contributing
