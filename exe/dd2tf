@@ -5,52 +5,11 @@ require 'thor'
 require 'dogapi'
 
 module Dd2tf
-  module Util
-    def initialize(*args, &block)
-      super
-      client
-    end
-
-    private
-
-    def client
-      return @client unless @client.nil?
-      config = Config.new(options[:dd_api_key], options[:dd_app_key])
-      @client ||= ::Dogapi::Client.new(config.api_key, config.app_key)
-    end
-  end
-
-  class Print < Thor
-    include Util
-
-    desc "user", "ipmort user resource to tfstate"
-    def user
-      puts ::Dd2tf::Import::User.new(client).print
-    end
-
-    desc "downtime", "ipmort downtime resource to tfstate"
-    def downtime
-      puts ::Dd2tf::Import::Downtime.new(client).print
-    end
-
-    desc "monitor", "ipmort monitor resource to tfstate"
-    def monitor
-      puts ::Dd2tf::Import::Monitor.new(client).print
-    end
-
-    desc "timeboard", "ipmort timeboard resource to tfstate"
-    def timeboard
-      puts ::Dd2tf::Import::Timeboard.new(client).print
-    end
-  end
-
   class Cli < Thor
-    include Util
+    include Thor::Actions
 
     class_option :dd_api_key, type: :string
     class_option :dd_app_key, type: :string
-    desc "print [resource]", "Print import resource command from remote to tfstate."
-    subcommand 'print', Print
 
     desc "puts monitor configuration as terraform config", "puts monitor config"
     def monitor
@@ -65,6 +24,14 @@ module Dd2tf
     desc "puts user configuration as terraform config", "puts user config"
     def user
       puts User.new(client).output
+    end
+
+    private
+
+    def client
+      return @client unless @client.nil?
+      config = Config.new(options[:dd_api_key], options[:dd_app_key])
+      @client ||= ::Dogapi::Client.new(config.api_key, config.app_key)
     end
   end
 end
