@@ -6,7 +6,7 @@ module Dd2tf
 
       results = []
       monitors.each do |monitor|
-        monitor_name = monitor["name"].underscore.gsub(" ", "_").gsub(UNALLOWED_RESOURCE_TITLE_REGEXP, '')
+        monitor_name = monitor["name"].underscore.gsub(" ", "_").gsub(::Dd2tf::UNALLOWED_RESOURCE_TITLE_REGEXP, '')
         renderer = renderer()
         results << renderer.result(binding)
       end

@@ -10,7 +10,7 @@ module Dd2tf
         users = @client.get_all_users[1]["users"]
 
         users.each do |user|
-          user_name = user["name"].to_s.underscore.gsub(" ", "_").gsub(UNALLOWED_RESOURCE_TITLE_REGEXP, '')
+          user_name = user["name"].to_s.underscore.gsub(" ", "_").gsub(::Dd2tf::UNALLOWED_RESOURCE_TITLE_REGEXP, '')
           # resource_id is the email address
           # see: https://www.terraform.io/docs/providers/datadog/r/user.html#import
           resource_id = user["email"]

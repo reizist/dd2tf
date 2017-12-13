@@ -3,9 +3,9 @@ require 'active_support'
 require 'active_support/core_ext'
 
 module Dd2tf
+  UNALLOWED_RESOURCE_TITLE_REGEXP = /\(|\)|'|,|\.|\[|\]|:/
   class Base
     class NotImplementedError < StandardError; end
-    UNALLOWED_RESOURCE_TITLE_REGEXP = /\(|\)|'|,|\.|\[|\]|:/
 
     def initialize(client)
       @client = client

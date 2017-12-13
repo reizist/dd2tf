@@ -10,7 +10,7 @@ module Dd2tf
         boards = @client.get_dashboards[1]["dashes"]
 
         boards.each do |board|
-          board_name = board["title"].underscore.gsub(" ", "_").gsub(UNALLOWED_RESOURCE_TITLE_REGEXP, '')
+          board_name = board["title"].underscore.gsub(" ", "_").gsub(::Dd2tf::UNALLOWED_RESOURCE_TITLE_REGEXP, '')
           resource_id = board["id"]
           resources << { resource_id: resource_id, resource_name: board_name }
         end

@@ -6,7 +6,6 @@ module Dd2tf
     class Base
       attr_reader :resources
       class NotImplementedError < StandardError; end
-      UNALLOWED_RESOURCE_TITLE_REGEXP = /\(|\)|'|\.|\[|\]|:/
 
       def initialize(client)
         @client = client
