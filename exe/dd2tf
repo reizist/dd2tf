@@ -50,29 +50,41 @@ module Dd2tf
     end
   end
 
+  class Tf < Thor
+    include Util
+
+    desc "monitor", "puts monitor config"
+    def monitor
+      puts ::Dd2tf::Monitor.new(client).output
+    end
+
+    desc "timeboard", "puts timeboard config"
+    def timeboard
+      puts ::Dd2tf::Timeboard.new(client).output
+    end
+
+    desc "user", "puts user config"
+    def user
+      puts ::Dd2tf::User.new(client).output
+    end
+  end
+
   class Cli < Thor
     include Thor::Actions
     include Util
 
     class_option :dd_api_key, type: :string
     class_option :dd_app_key, type: :string
-    desc "print [resource]", "Print import resource command from remote to tfstate."
+    desc "print [resource]",
+         "Print resources importing command for outputting to tfstate.
+          [resource] is one of the [monitor, timeboard, user, downtime]"
     subcommand 'print', Print
 
-    desc "monitor", "puts monitor config"
-    def monitor
-      puts Monitor.new(client).output
-    end
+    desc "tf [resource]",
+         "Print resources config terrafom formatted.
+          [resource] is one of the [monitor, timeboard, user]"
+    subcommand 'tf', Tf
 
-    desc "timeboard", "puts timeboard config"
-    def timeboard
-      puts Timeboard.new(client).output
-    end
-
-    desc "user", "puts user config"
-    def user
-      puts User.new(client).output
-    end
   end
 end
 
