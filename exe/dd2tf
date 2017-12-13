@@ -73,8 +73,9 @@ module Dd2tf
     include Thor::Actions
     include Util
 
-    class_option :dd_api_key, type: :string
-    class_option :dd_app_key, type: :string
+    class_option :dd_api_key, type: :string, required: true
+    class_option :dd_app_key, type: :string, required: true
+
     desc "print [resource]",
          "Print resources importing command for outputting to tfstate.
           [resource] is one of the [monitor, timeboard, user, downtime]"
