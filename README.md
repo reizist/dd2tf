@@ -24,10 +24,10 @@ Or install it yourself as:
 ```
 $ dd2tf help
 Commands:
-  dd2tf help [COMMAND]                                    # Describe available commands or one specific command
-  dd2tf puts monitor configuration as terraform config    # puts monitor config
-  dd2tf puts timeboard configuration as terraform config  # puts timeboard config
-  dd2tf puts user configuration as terraform config       # puts user config
+  dd2tf help [COMMAND]  # Describe available commands or one specific command
+  dd2tf monitor         # puts monitor config
+  dd2tf timeboard       # puts timeboard config
+  dd2tf user            # puts user config
 
 Options:
   [--dd-api-key=DD_API_KEY]
