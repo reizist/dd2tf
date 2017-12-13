@@ -18,7 +18,7 @@ module Dd2tf
     private
 
     def template_file
-      File.read("./lib/templates/#{self.class.name.split(":").last.underscore}.erb.rb")
+      File.read(File.expand_path("../../templates/#{self.class.name.split(":").last.underscore}.erb.rb", __FILE__))
     end
 
     def renderer
